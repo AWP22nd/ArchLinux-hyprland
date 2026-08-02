@@ -38,7 +38,7 @@ local ai = browser .. " --app=https://chatgpt.com"
 -- rofi
 local launcher = "rofi -show drun -show-icons"
 local runner = "rofi -show run"hl.on("hyprland.start", function()
-	hl.exec_cmd("waybar & wpaperd -d")
+	-- hl.exec_cmd("waybar & wpaperd -d")
 	hl.exec_cmd("hyprctl setcursor Bibata-Modern-Ice 30")
 	hl.exec_cmd("playerctld daemon")
 	hl.exec_cmd("wl-paste --watch cliphist store")
@@ -57,6 +57,8 @@ local clipboardHistory = "cliphist list | rofi -dmenu | cliphist decode | wl-cop
 -- Or execute your favorite apps at launch like this:
 --
 hl.on("hyprland.start", function()
+   
+    hl.exec_cmd("waypaper --restore")   
 	hl.exec_cmd("waybar & wpaperd -d")
 	hl.exec_cmd("hyprctl setcursor Bibata-Modern-Ice 24")
 	hl.exec_cmd("playerctld daemon")
@@ -72,6 +74,8 @@ end)
 
 hl.env("XCURSOR_SIZE", "24")
 hl.env("HYPRCURSOR_SIZE", "24")
+hl.env("WLR_NO_HARDWARE_CURSORS", "1")
+-- hl.env("GTK_THEMES", "Bright Lights")
 
 
 -----------------------
@@ -106,12 +110,12 @@ hl.config({
         border_size = 2,
 
         col = {
-            active_border   = { colors = {"rgba(33ccffee)", "rgba(00ff99ee)"}, angle = 45 },
+            active_border   = { colors = {"rgba(33ccffee)", "rgba(00ff99ee)"}, angle = 35 },
             inactive_border = "rgba(595959aa)",
         },
 
         -- Set to true to enable resizing windows by clicking and dragging on borders and gaps
-        resize_on_border = false,
+        resize_on_border = true,
 
         -- Please see https://wiki.hypr.land/Configuring/Advanced-and-Cool/Tearing/ before you turn this on
         allow_tearing = false,
@@ -157,11 +161,11 @@ hl.curve("quick",          { type = "bezier", points = { {0.15, 0},    {0.1, 1} 
 -- Default springs
 hl.curve("easy",           { type = "spring", mass = 1, stiffness = 71.2633, dampening = 15.8273644 })
 
-hl.animation({ leaf = "global",        enabled = true,  speed = 10,   bezier = "default" })
+hl.animation({ leaf = "global",        enabled = true,  speed = .8,   bezier = "default" })
 hl.animation({ leaf = "border",        enabled = true,  speed = 5.39, bezier = "easeOutQuint" })
 hl.animation({ leaf = "windows",       enabled = true,  speed = 4.79, spring = "easy" })
-hl.animation({ leaf = "windowsIn",     enabled = true,  speed = 4.1,  spring = "easy",         style = "popin 87%" })
-hl.animation({ leaf = "windowsOut",    enabled = true,  speed = 1.49, bezier = "linear",       style = "popin 87%" })
+hl.animation({ leaf = "windowsIn",     enabled = true,  speed = .5,  spring = "easy",         style = "popin 87%" })
+hl.animation({ leaf = "windowsOut",    enabled = true,  speed = .5, bezier = "linear",       style = "popin 87%" })
 hl.animation({ leaf = "fadeIn",        enabled = true,  speed = 1.73, bezier = "almostLinear" })
 hl.animation({ leaf = "fadeOut",       enabled = true,  speed = 1.46, bezier = "almostLinear" })
 hl.animation({ leaf = "fade",          enabled = true,  speed = 3.03, bezier = "quick" })
@@ -213,7 +217,23 @@ hl.config({
         fullscreen_on_one_column = true,
     },
 })
+        cursor = {
+            no_hardware_cursors = true
+        }
+hl.config({
+    input = {
+        kb_layout = "us",
+        follow_mouse = 2,
+        sensitivity = 0.0,
 
+        accel_profile = "flat", 
+        -- Atau gunakan "adaptive" jika ingin akselerasi bawaan sistem
+        
+        touchpad = {
+            natural_scroll = true,
+        },
+    },
+})   
 ----------------
 ----  MISC  ----
 ----------------
@@ -258,12 +278,12 @@ hl.gesture({
 })
 
 -- Example per-device config
--- See https://wiki.hypr.land/Configuring/Advanced-and-Cool/Devices/ for more
+-- See https://wiki.hypr.lannano ~/.config/hypr/UserConfigs/01-UserDefaults.conf   d/Configuring/Advanced-and-Cool/Devices/ for more
 hl.device({
     name        = "epic-mouse-v1",
     sensitivity = -0.5,
 })
-
+-- Bright Lights DImidium Idea 0x96F
 
 ---------------------
 ---- KEYBINDINGS ----
@@ -277,17 +297,17 @@ local secondMod = "SUPER + SHIFT" -- Sets "Windows" + "SHIFT" key as second modi
 hl.bind(mainMod .. " + W", hl.dsp.exec_cmd(terminal))
 local closeWindowBind = hl.bind(mainMod .. " + Q", hl.dsp.window.close())
 -- closeWindowBind:set_enabled(false)
-hl.bind(mainMod .. " + M", hl.dsp.exec_cmd("command -v hyprshutdown >/dev/null 2>&1 && hyprshutdown || hyprctl dispatch 'hl.dsp.exit()'"))
+hl.bind(mainMod .. " + L", hl.dsp.exec_cmd("command -v hyprshutdown >/dev/null 2>&1 && hyprshutdown || hyprctl dispatch 'hl.dsp.exit()'"))
 hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(fileManager))
 hl.bind(mainMod .. " + V", hl.dsp.window.float({ action = "toggle" }))
--- hl.bind(mainMod .. " + R", hl.dsp.exec_cmd(menu))
+hl.bind(mainMod .. " + Space", hl.dsp.exec_cmd(launcher))
+hl.bind(secondMod .. " + Space", hl.dsp.exec_cmd(runner))
 hl.bind(mainMod .. " + P", hl.dsp.window.pseudo())
 hl.bind(mainMod .. " + J", hl.dsp.layout("togglesplit"))    -- dwindle only
 
 
 -- apps
 hl.bind(mainMod .. " + B", hl.dsp.exec_cmd(browser))
-hl.bind(mainMod .. " + F", hl.dsp.exec_cmd(fileManager))
 hl.bind(mainMod .. " + M", hl.dsp.exec_cmd(music))
 hl.bind(mainMod .. " + N", hl.dsp.exec_cmd(notion))
 hl.bind(mainMod .. " + A", hl.dsp.exec_cmd(ai))
@@ -322,7 +342,21 @@ hl.bind(mainMod .. " + mouse_up",   hl.dsp.focus({ workspace = "e-1" }))
 
 -- Move/resize windows with mainMod + LMB/RMB and dragging
 hl.bind(mainMod .. " + mouse:272", hl.dsp.window.drag(),   { mouse = true })
-hl.bind(mainMod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
+hl.bind(secondMod .. " + mouse:272", hl.dsp.window.resize(), { mouse = true })
+
+-- SS
+
+-- 1. Screenshot seluruh layar (monitor)
+hl.bind(mainMod .. " + Print", hl.dsp.exec_cmd("grim ~/Pictures/screenshots/full_$(date +%Y%m%d_%H%M%S).png"))
+
+-- 2. Screenshot area yang dipilih (selective region)
+hl.bind(secondMod .. " + Print", hl.dsp.exec_cmd([[grim -g "$(slurp)" ~/Pictures/screenshots/region_$(date +%Y%m%d_%H%M%S).png]]))
+
+-- 3. Screenshot jendela aktif
+hl.bind(mainMod .. " + Tab + Print", hl.dsp.exec_cmd("grim -g \"$(hyprctl activewindow -j | jq -r '.rect')\" ~/Pictures/screenshots/window_$(date +%Y%m%d_%H%M%S).png"))
+
+-- 4. Salin ke clipboard (opsional, untuk area)
+-- hl.bind( "CTRL + V ", hl.dsp.exec_cmd([[grim -g "$(slurp)" - | wl-copy]]))
 
 
 
@@ -382,7 +416,7 @@ hl.bind("XF86AudioPlay",  hl.dsp.exec_cmd("playerctl play-pause"), { locked = tr
 hl.bind("XF86AudioPrev",  hl.dsp.exec_cmd("playerctl previous"),   { locked = true })
 
 
---------------------------------
+--------------------------------Audio
 ---- WINDOWS AND WORKSPACES ----
 --------------------------------
 
