@@ -21,6 +21,30 @@ hl.monitor({
     position = "0x0",
     scale    = "1",
 })
+hl.monitor({
+    output   = "HDMI-A-1",
+    mode     = "1920x1080@144",
+    position = "0x0",
+    scale    = "1",
+})
+
+-- -- Otomatis deteksi & konfigurasi saat monitor dicolok/dicabut
+-- local function apply_monitors()
+--     local external = hl.get_monitor("HDMI-A-1")
+--     if external then
+--         -- Proyekter terdeteksi → extend
+--         hl.monitor({ output = "eDP-1",    mode = "1920x1200@60", position = "0x0",    scale = 1, disabled = false })
+--         hl.monitor({ output = "HDMI-A-1", mode = "1920x1080@60", position = "1920x0", scale = 1, disabled = false })
+--     else
+--         -- Hanya laptop
+--         hl.monitor({ output = "eDP-1",    mode = "1920x1200@60", position = "0x0", scale = 1, disabled = false })
+--         hl.monitor({ output = "HDMI-A-1", disabled = true })
+--     end
+-- end
+
+-- hl.on("hyprland.start", apply_monitors)
+-- hl.on("monitor.added", apply_monitors)
+-- hl.on("monitor.removed", apply_monitors)   
 
 
 ---------------------
@@ -415,6 +439,11 @@ hl.bind("XF86AudioPause", hl.dsp.exec_cmd("playerctl play-pause"), { locked = tr
 hl.bind("XF86AudioPlay",  hl.dsp.exec_cmd("playerctl play-pause"), { locked = true })
 hl.bind("XF86AudioPrev",  hl.dsp.exec_cmd("playerctl previous"),   { locked = true })
 
+-- Volume
+hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("~/.config/hypr/scripts/volume --inc")) 
+hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("~/.config/hypr/scripts/volume --dec")) 
+hl.bind("XF86AudioMicMute", hl.dsp.exec_cmd("~/.config/hypr/scripts/volume --toggle-mic")) 
+hl.bind("XF86AudioMute", hl.dsp.exec_cmd("~/.config/hypr/scripts/volume --toggle"))
 
 --------------------------------Audio
 ---- WINDOWS AND WORKSPACES ----
