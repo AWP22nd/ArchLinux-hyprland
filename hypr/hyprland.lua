@@ -17,34 +17,61 @@
 -- See https://wiki.hypr.land/Configuring/Basics/Monitors/
 hl.monitor({
     output   = "eDP-1",
-    mode     = "1920x1080@144",
+    mode     = "1920x1080@60",
     position = "0x0",
     scale    = "1",
 })
 hl.monitor({
     output   = "HDMI-A-1",
-    mode     = "1920x1080@144",
-    position = "0x0",
+    mode     = "1920x1080@60",
+    position = "1920x0",
+    mirror   = "eDP-1",
     scale    = "1",
 })
 
--- -- Otomatis deteksi & konfigurasi saat monitor dicolok/dicabut
--- local function apply_monitors()
---     local external = hl.get_monitor("HDMI-A-1")
---     if external then
---         -- Proyekter terdeteksi → extend
---         hl.monitor({ output = "eDP-1",    mode = "1920x1200@60", position = "0x0",    scale = 1, disabled = false })
---         hl.monitor({ output = "HDMI-A-1", mode = "1920x1080@60", position = "1920x0", scale = 1, disabled = false })
---     else
---         -- Hanya laptop
---         hl.monitor({ output = "eDP-1",    mode = "1920x1200@60", position = "0x0", scale = 1, disabled = false })
---         hl.monitor({ output = "HDMI-A-1", disabled = true })
---     end
--- end
+-- Otomatis deteksi & konfigurasi saat monitor dicolok/dicabut
+local function apply_monitors()
+    local external = hl.get_monitor("HDMI-A-1")
+    if external then
+        -- Proyekter terdeteksi → extend
+        hl.monitor({ output = "eDP-1",    mode = "1920x1200@60", position = "0x0",    scale = 1, disabled = false })
+        hl.monitor({ output = "HDMI-A-1", mode = "1920x1080@60", position = "1920x0", scale = 1, disabled = false })
+    else
+        -- Hanya laptop
+        hl.monitor({ output = "eDP-1",    mode = "1920x1200@60", position = "0x0", scale = 1, disabled = false })
+        hl.monitor({ output = "HDMI-A-1", disabled = true })
+    end
+end
 
 -- hl.on("hyprland.start", apply_monitors)
 -- hl.on("monitor.added", apply_monitors)
 -- hl.on("monitor.removed", apply_monitors)   
+
+-- Set zoom_factor baru
+-- local function set_zoom(value)
+--     if value < 1 then value = 1 end
+--     hyprctl(string.format('keyword cursor:zoom_factor %.2f', value))
+--     print(string.format("Zoom diatur ke: %.2f", value))
+-- end
+ 
+-- -- Fungsi zoom in
+-- local function zoom_in(step)
+--     step = step or 0.25
+--     local current = get_zoom()
+--     set_zoom(current + step)
+-- end
+ 
+-- -- Fungsi zoom out
+-- local function zoom_out(step)
+--     step = step or 0.25
+--     local current = get_zoom()
+--     set_zoom(current - step)
+-- end
+ 
+-- -- Reset zoom ke normal
+-- local function zoom_reset()
+--     set_zoom(1.0)
+-- end
 
 
 ---------------------
